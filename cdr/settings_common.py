@@ -124,6 +124,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'media')
 
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
 
 BOOTSTRAP3 = {
     'theme_url': '%scdr/css/style.css' % STATIC_URL,

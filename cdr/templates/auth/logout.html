@@ -1,5 +1,15 @@
 {% extends 'base.html' %}
+{% load bootstrap3 i18n %}
 
 {% block content %}
-<p>Logged out</p>
+<div class="col-md-4 col-md-offset-3 col-sm-6 col-sm-offset-2">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			{% trans 'You are logged out' %}
+		</div>
+		<div class="panel-body">
+			{% bootstrap_button _('Log in again') button_type='link' href="login" button_class='btn-primary' icon='log-in' %}
+		</div>
+	</div>
+</div>
 {% endblock %}

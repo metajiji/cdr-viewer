@@ -1,35 +1,33 @@
 from django.template import Library
 from django.core.urlresolvers import reverse, resolve, NoReverseMatch
 
-
 register = Library()
 
 
 @register.simple_tag
-def nav_active(request_uri, uris, data='class="active"', **kwargs):
+def nav_active(request_uri, uris, data='active', **kwargs):
     """
     Description:
-        Highlight bootstrap nav menu by 'class="active"'.
+        Highlight bootstrap nav menu by 'active'.
     Usage:
-        For urlpatterns:
+        For url patterns:
             url(r'^accounts/add/(?P<server_id>\d+)/$', views.accounts_add, {}, name='accounts_add'),
             url(r'^accounts/manage/(?P<server_id>\d+)/$', views.accounts_manage, {}, name='accounts_manage'),
         Use code in template:
-            {% nav_active request.path 'cp:accounts_manage cp:accounts_add' 'active' server_id=server.server_id.id %}
+            <li class="foo {% nav_active request.path 'cp:manage cp:add' 'current' server_id=server.id %}">foo bar</li>
             Or highlight with any server_id value:
-            {% nav_active request.path 'cp:accounts_manage' 'active' %}
+            <li{% nav_active request.path 'cp:manage' ' class="active"' %}>foo bar</li>
 
-        For urlpattern:
+        For url pattern:
             url(r'^accounts/edit/(?P<server_id>\d+)/(?P<account_id>\d+)/$',
                 views.accounts_edit, {}, name='accounts_edit'),
         Use code in template:
-            url(r'^accounts/conf/(?P<server_id>\d+)/(?P<account_id>\d+)/$',
-                views.accounts_conf, {}, name='accounts_conf'),
+            <li class="foo bar {% nav_active request.path 'cp:manage' %}">foo bar</li>
 
-        For urlpattern:
+        For url pattern:
             url(r'^$', views.home, name='home'),
         Use code in template:
-            {% nav_active request.path 'cp:home' %}
+            <li{% nav_active request.path 'cp:home' ' class="active"' %}>foo bar</li>
     """
 
     for uri in uris.split():
@@ -42,5 +40,5 @@ def nav_active(request_uri, uris, data='class="active"', **kwargs):
                             return ''
                 return data
         except NoReverseMatch:
-            pass  # return ''
+            pass
     return ''
