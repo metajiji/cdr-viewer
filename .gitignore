@@ -1,6 +1,8 @@
 *.py[cd]
+*.sqlite3
 .idea/
 venv/
+logs/*
 public/*
 !*.gitkeep
 cdr/settings.py

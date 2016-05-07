@@ -1,0 +1,11 @@
+# -*- coding: utf-8 -*-
+
+import os
+from cdr.settings_common import *
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'cdr.sqlite3',
+    }
+}
