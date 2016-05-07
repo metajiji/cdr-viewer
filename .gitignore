@@ -1,0 +1,6 @@
+*.py[cd]
+.idea/
+venv/
+public/*
+!*.gitkeep
+cdr/settings.py
