@@ -11,11 +11,19 @@ python manage.py createsuperuser
 python manage.py collectstatic
 ```
 
-## If `models.py` was chenged, run again:
+## Migrations
+
+### If `models.py` was chenged, run again:
 
 ```bash
 python manage.py makemigrations cdr
 python manage.py migrate
+```
+
+### Apply migrations
+
+```
+python manage.py migrate --database pbx cdr
 ```
 
 ## Custom admin

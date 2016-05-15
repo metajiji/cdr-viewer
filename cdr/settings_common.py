@@ -22,6 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# </dev/urandom tr -dc A-Za-z0-9| head -c 50
 SECRET_KEY = '00&3fw7gr0_-i0*hm4(gz9e$5=i+5i$-084zb%sa#d-(1a_-$('
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
 
     # Custom plugins
     'bootstrap3',  # django-bootstrap3
+    'bootstrap_pagination',  # django-bootstrap-pagination
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -66,6 +68,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.media',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',

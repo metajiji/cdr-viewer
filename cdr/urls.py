@@ -17,8 +17,11 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
-from .views import cdr
+# from .views import cdr
+from . import views
 
+# TODO x-accel-redirect.
+# https://toster.ru/q/208755
 urlpatterns = [
     # Auth
     url('^login/$', auth_views.login, {'template_name': 'auth/login.html'}, name='login'),
@@ -32,5 +35,5 @@ urlpatterns = [
 
     # Application
     url(r'^$', RedirectView.as_view(pattern_name='home')),
-    url(r'^cdr/', cdr.home, name='home'),
+    url(r'^cdr/', views.home, name='home'),
 ]
