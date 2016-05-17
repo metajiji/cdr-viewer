@@ -69,3 +69,7 @@ git filter-branch --force --index-filter \
 'git rm --cached --ignore-unmatch cdr/settings.py' \
 --prune-empty --tag-name-filter cat -- --all
 ```
+
+# Media files
+* http://stackoverflow.com/questions/8600843/serving-large-files-with-high-loads-in-django
+* https://toster.ru/q/208755

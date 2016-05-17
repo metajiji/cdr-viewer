@@ -31,7 +31,7 @@ class Asterisk(models.Model):
 
     uniqueid = models.CharField(primary_key=True, max_length=150, verbose_name=_('uniqueid'))
     calldate = models.DateTimeField(auto_now=False, auto_now_add=False, db_index=True,
-                                default='1970-01-18 00:00:00', verbose_name=_('calldate'))
+                                    default='1970-01-18 00:00:00', verbose_name=_('calldate'))
     billsec = models.IntegerField(verbose_name=_('BillSec'))
     duration = models.IntegerField(verbose_name=_('Duration'))
     amaflags = models.IntegerField(verbose_name=_('amaflags'))

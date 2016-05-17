@@ -37,3 +37,8 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='home')),
     url(r'^cdr/', views.home, name='home'),
 ]
+
+# TODO: development serve static and media files
+from django.conf.urls.static import static
+from django.conf import settings
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,49 +1,59 @@
 {% extends 'base.html' %}
 
-{% load bootstrap3 bootstrap_pagination i18n %}
+{% load bootstrap3 bootstrap_pagination i18n staticfiles %}
 
 {% block title %}Cdr-viewer{% endblock %}
 
 {% block content %}
-<table class="table table-bordered table-hover table-striped tablesorter">
-	<thead>
-		<tr>
-			<th class="header">{% trans 'Date' %} {% bootstrap_icon 'sort' %}</th>
-			<th class="header">{% trans 'File' %} {% bootstrap_icon 'sort' %}</th>
-			<th class="header">{% trans 'SRC nunber' %}</th>
-			<th class="header">{% trans 'DST nunber' %}</th>
-			<th class="header">{% trans 'Duration' %}</th>
-			<th class="header">{% trans 'Input channel' %}</th>
-			<th class="header">{% trans 'Output channel' %}</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for c in calls %}
-		<tr>
-			<td>{{ c.calldate }}</td>
-			<td>
-				<div class="form-inline">
-					<div class="form-group">
-						<audio preload="none" controls>
-							<source src="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3" type="audio/mpeg">
-							{%  trans 'Your browser does not support the playback audio.' %}
-						</audio>
-					</div>
-					<a class="btn btn-primary" target="_blank" href="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3" type="link">{% bootstrap_icon "download-alt" %}</a>
-				</div>
-			</td>
-			<td>{{ c.src }}</td>
-			<td>{{ c.dst }}</td>
-			<td>{{ c.duration }}</td>
-			<td>{{ c.clid }}</td>
-			<td>{{ c.dstchannel }}</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
+	<link href="{% static 'bootstrap3_player/css/bootstrap3_player.css' %}" rel="stylesheet"/>
 
-{% if calls.paginator.num_pages > 1 %}
-	{% bootstrap_paginate calls range=10 show_index_range='True' show_first_last='True' %}
-{% endif %}
+	<div class="container">
+		<div class="row col-md-6 col-md-offset-3 col-xs-12">
+			<audio id="audio" controls>
+				<source src="#" type="audio/mpeg"/>
+				{% trans 'An html5-capable browser is required to play this audio.' %}
+			</audio>
+		</div>
 
+		<div class="row col-md-12 col-xs-12">
+			<table id="table" class="table table-bordered table-hover table-striped tablesorter">
+				<thead>
+				<tr>
+					<th class="header">{% trans 'Date' %} {% bootstrap_icon 'sort' %}</th>
+					<th class="header">{% trans 'File' %} {% bootstrap_icon 'sort' %}</th>
+					<th class="header">{% trans 'SRC nunber' %}</th>
+					<th class="header">{% trans 'DST nunber' %}</th>
+					<th class="header">{% trans 'Duration' %}</th>
+					<th class="header">{% trans 'Input channel' %}</th>
+					<th class="header">{% trans 'Output channel' %}</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for c in calls %}
+					<tr>
+						<td>{{ c.calldate }}</td>
+						<td class="text-center">
+							<div class="btn-group btn-group-xs" role="group">
+								<button type="button" audiourl="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3"
+										class="btn btn-success playbtn">{% bootstrap_icon "play" %}</button>
+								<a class="btn btn-default" target="_blank" href="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3"
+								   type="link">{% bootstrap_icon "download-alt" %}</a>
+							</div>
+						</td>
+						<td>{{ c.src }}</td>
+						<td>{{ c.dst }}</td>
+						<td>{{ c.duration }}</td>
+						<td>{{ c.clid }}</td>
+						<td>{{ c.dstchannel }}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+
+			{% if calls.paginator.num_pages > 1 %}
+				{% bootstrap_paginate calls range=10 show_index_range='True' show_first_last='True' %}
+			{% endif %}
+		</div>
+	</div>
+	<script src="{% static 'bootstrap3_player/js/bootstrap3_player.js' %}"></script>
 {% endblock %}
