@@ -11,7 +11,7 @@ def home(request):
     count = request.GET.get('count', default=10)
     page = request.GET.get('page', default=1)
 
-    paginator = Paginator(calls_list, count)  # Show 25 contacts per page
+    paginator = Paginator(calls_list, count)  # Show 10 calls per page
     try:
         calls = paginator.page(page)
     except PageNotAnInteger:

@@ -13,21 +13,22 @@
 
 		var load_error = function(){
 			console.log('load_error');
-			// $(player_box).find('.btn').addClass('disabled');
-			// $(player_box).find('input[type="range"]').hide();
+			$(player_box).find('.btn').addClass('disabled').attr('disabled', 'disabled');
+			$('#time').removeAttr('disabled');
+			$(player_box).find('input[type="range"]').hide();
 			$(player_box).find('.glyphicon-refresh').text('Error');
 			$(player_box).find('.glyphicon-refresh').parent().attr('title', 'There was an error loading the audio.');
 			$(player_box).find('.glyphicon-refresh').parent().tooltip('fixTitle');
-			// $(player_box).find('.glyphicon-refresh').removeClass('glyphicon glyphicon-refresh spin');
+			$(player_box).find('.glyphicon-refresh').removeClass('glyphicon glyphicon-refresh spin');
 		};  // load_error
 
 		var addSeek = function(){
 			var seek = document.createElement('input');
 			$(seek).attr({
+				'class': 'seek',
 				'type': 'range',
-				'min': 0,
 				'value': 0,
-				'class': 'seek'
+				'min': 0
 			});
 
 			seek.progress = function(){
@@ -91,7 +92,7 @@
 			};
 
 			var seek_wrapper = document.createElement('div');
-			$(seek_wrapper).addClass('btn btn-default col-sm-4 hidden-xs');
+			$(seek_wrapper).addClass('btn btn-default col-sm-4');
 			$(seek_wrapper).append(seek);
 			$(seek).on('change', seek.slide);  // bind seek / position slider events
 
@@ -111,7 +112,7 @@
 
 		var addTime = function(){
 			var time = document.createElement('button');
-			$(time).addClass('btn btn-default col-sm-3');
+			$(time).addClass('btn btn-default col-sm-3').attr('id', 'time');
 			$(time).tooltip({'container': 'body', 'placement': 'right', 'html': true});
 
 			time.twodigit = function(myNum){
@@ -155,11 +156,11 @@
 
 			$(time).tooltip('show');
 			$(song).on('loadedmetadata', time.showtime);
+			$(song).on('canplaythrough', time.showtime);
 			$(song).on('loadeddata', time.showtime);
+			$(song).on('timeupdate', time.showtime);
 			$(song).on('progress', time.showtime);
 			$(song).on('canplay', time.showtime);
-			$(song).on('canplaythrough', time.showtime);
-			$(song).on('timeupdate', time.showtime);
 			if(song.readyState > 0){
 				time.showtime();
 			} else {
@@ -219,42 +220,47 @@
 			};
 
 			var vol_wrapper = document.createElement('div');
-			$(vol_wrapper).addClass('btn btn-default row col-sm-3 hidden-xs');
+			$(vol_wrapper).addClass('btn btn-default row col-sm-3');
 			$(vol_wrapper).append(volume);
 			$(volume).on('change', volume.slide);
 			$(song).on('volumechange', volume.set);
 			$(player).append(vol_wrapper);
-
 		};  // addVolume
 
-		var checkLoad = function(el){
+		var loadUrl = function(btn){
+			$(player_box).find('.btn').removeClass('disabled').removeAttr('disabled');
+			$(player_box).find('input[type="range"]').show();
+			$('#time').html('<i class="glyphicon glyphicon-refresh spin"></i>');
+			$('#time').tooltip('fixTitle');
+
+			if(btn.hasClass('btn-danger')){
+				btn.removeClass('btn-danger').addClass('btn-success');
+			}
+			btn.html('<span class="glyphicon glyphicon-pause"></span>');
+			$('#audio source').attr('src', btn.attr('audiourl'));
+			song.load();
+			song.play();
+
 			var timeout = 0;
 			var loadCheck = setInterval(function(){
 				if(isNaN(song.duration) === false){
-					$(el).html('<span class="glyphicon glyphicon-pause"></span>');
+					$(this).html('<span class="glyphicon glyphicon-success"></span>');
 					clearInterval(loadCheck);
 					return true;
 				}
 				if(song.networkState === 3 || timeout === 100){
 					// 3 = NETWORK_NO_SOURCE - no audio/video source found
 					console.log('No audio source was found or a timeout occurred');
+					btn.removeClass('btn-success').addClass('btn-danger');
 					load_error();
 					clearInterval(loadCheck);
 					return false;
 				}
 				timeout++;
 			}, 100); // x milliseconds per attempt
-		}; // checkLoad
-
-		var loadUrl = function(btn){
-			btn.html('<span class="glyphicon glyphicon-pause"></span>');
-			$('#audio source').attr('src', btn.attr('audiourl'));
-			song.load();
-			song.play();
-			checkLoad(this);
 		};
 
-		var addPlay = function(btn){
+		var addPlay = function(){
 			$(song).on('pause', function(){
 				$('.playbtn').html('<span class="glyphicon glyphicon-play"></span>');
 			});

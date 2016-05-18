@@ -1,59 +1,100 @@
 {% extends 'base.html' %}
 
-{% load bootstrap3 bootstrap_pagination i18n staticfiles %}
+{% load bootstrap3 bootstrap_pagination i18n staticfiles verbose_name %}
 
 {% block title %}Cdr-viewer{% endblock %}
 
 {% block content %}
-	<link href="{% static 'bootstrap3_player/css/bootstrap3_player.css' %}" rel="stylesheet"/>
+	<link href="{% static 'cdr/css/bootstrap3_player.min.css' %}" rel="stylesheet"/>
+
+	<link href="{% static 'cdr/css/jquery.tablesorter.theme.bootstrap.min.css' %}" rel="stylesheet"/>
+	<script src="{% static 'cdr/js/jquery.tablesorter.min.js' %}"></script>
+	<script src="{% static 'cdr/js/jquery.tablesorter.widgets.min.js' %}"></script>
 
 	<div class="container">
-		<div class="row col-md-6 col-md-offset-3 col-xs-12">
-			<audio id="audio" controls>
-				<source src="#" type="audio/mpeg"/>
-				{% trans 'An html5-capable browser is required to play this audio.' %}
-			</audio>
-		</div>
-
 		<div class="row col-md-12 col-xs-12">
-			<table id="table" class="table table-bordered table-hover table-striped tablesorter">
-				<thead>
-				<tr>
-					<th class="header">{% trans 'Date' %} {% bootstrap_icon 'sort' %}</th>
-					<th class="header">{% trans 'File' %} {% bootstrap_icon 'sort' %}</th>
-					<th class="header">{% trans 'SRC nunber' %}</th>
-					<th class="header">{% trans 'DST nunber' %}</th>
-					<th class="header">{% trans 'Duration' %}</th>
-					<th class="header">{% trans 'Input channel' %}</th>
-					<th class="header">{% trans 'Output channel' %}</th>
-				</tr>
-				</thead>
-				<tbody>
-				{% for c in calls %}
+			<div class="table-responsive">
+				<audio id="audio" controls>
+					<source src="#" type="audio/mpeg"/>
+					{% trans 'An html5-capable browser is required to play this audio.' %}
+				</audio>
+				<table id="table" class="table table-bordered table-hover table-striped tablesorter">
+					<thead>
 					<tr>
-						<td>{{ c.calldate }}</td>
-						<td class="text-center">
-							<div class="btn-group btn-group-xs" role="group">
-								<button type="button" audiourl="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3"
-										class="btn btn-success playbtn">{% bootstrap_icon "play" %}</button>
-								<a class="btn btn-default" target="_blank" href="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3"
-								   type="link">{% bootstrap_icon "download-alt" %}</a>
-							</div>
-						</td>
-						<td>{{ c.src }}</td>
-						<td>{{ c.dst }}</td>
-						<td>{{ c.duration }}</td>
-						<td>{{ c.clid }}</td>
-						<td>{{ c.dstchannel }}</td>
+						<th class="header">{% get_verbose_field_name calls.0 'calldate' %}</th>
+						<th class="header">{% trans 'File' %}</th>
+						<th class="header">{% get_verbose_field_name calls.0 'duration' %} {% bootstrap_icon 'sort' %}</th>
+						<th class="header">{% get_verbose_field_name calls.0 'src' %} {% bootstrap_icon 'sort' %}</th>
+						<th class="header">{% get_verbose_field_name calls.0 'dst' %} {% bootstrap_icon 'sort' %}</th>
+						<th class="header">{% get_verbose_field_name calls.0 'clid' %}</th>
+						<th class="header">{% get_verbose_field_name calls.0 'dstchannel' %}</th>
 					</tr>
-				{% endfor %}
-				</tbody>
-			</table>
-
-			{% if calls.paginator.num_pages > 1 %}
-				{% bootstrap_paginate calls range=10 show_index_range='True' show_first_last='True' %}
-			{% endif %}
+					</thead>
+					<tbody>
+					{% for c in calls %}
+						<tr>
+							<td>{{ c.calldate }}</td>
+							<td class="text-center">
+								<div class="btn-group btn-group-xs" role="group">
+									<button type="button" audiourl="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3"
+											class="btn btn-success playbtn">{% bootstrap_icon "play" %}</button>
+									<a class="btn btn-default" target="_blank" href="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3"
+									   type="link">{% bootstrap_icon "download-alt" %}</a>
+								</div>
+							</td>
+							<td>{{ c.duration }}</td>
+							<td>{{ c.src }}</td>
+							<td>{{ c.dst }}</td>
+							<td>{{ c.clid }}</td>
+							<td>{{ c.dstchannel }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="7">
+								{% if calls.paginator.num_pages > 1 %}
+									{% bootstrap_paginate calls range=10 show_index_range='True' show_first_last='True' %}
+								{% endif %}
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
 		</div>
 	</div>
-	<script src="{% static 'bootstrap3_player/js/bootstrap3_player.js' %}"></script>
+
+	<script src="{% static 'cdr/js/bootstrap3_player.js' %}"></script>
+	<script>
+		$(function(){
+			$.tablesorter.themes.bootstrap = {
+				table       : 'table table-bordered table-striped',
+				caption     : 'caption',
+				// header class names
+				header      : 'bootstrap-header',  // give the header a gradient background (theme.bootstrap_2.css)
+				sortNone    : '',
+				sortDesc    : '',
+				sortAsc     : '',
+				active      : '',  // applied when column is sorted
+				hover       : '',  // custom css required - a defined bootstrap style may not override other classes
+				// icon class names
+				icons       : '',  // add "icon-white" to make them white; this icon class is added to the <i> in the header
+				iconSortNone: 'bootstrap-icon-unsorted',  // class name added to icon when column is not sorted
+				iconSortDesc: 'glyphicon glyphicon-chevron-down',  // class name added to icon when column has descending sort
+				iconSortAsc : 'glyphicon glyphicon-chevron-up',  // class name added to icon when column has ascending sort
+				filterRow   : '',  // filter row class; use widgetOptions.filter_cssFilter for the input/select element
+				footerCells : '',
+				footerRow   : '',
+				even        : '',  // even row zebra striping
+				odd         : ''  // odd row zebra striping
+			};
+
+			$('table').tablesorter({
+				theme : 'bootstrap',
+				headerTemplate : '{content} {icon}',
+				widgets : [ 'uitheme' ]
+			})
+		});
+	</script>
+
 {% endblock %}

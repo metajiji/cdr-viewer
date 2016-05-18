@@ -70,6 +70,14 @@ git filter-branch --force --index-filter \
 --prune-empty --tag-name-filter cat -- --all
 ```
 
-# Media files
+# LINKS
+
+## Media files
 * http://stackoverflow.com/questions/8600843/serving-large-files-with-high-loads-in-django
 * https://toster.ru/q/208755
+* http://csscompressor.com/
+
+## 3rdparty components
+* http://mottie.github.io/tablesorter/docs/
+* https://cdnjs.com/libraries/jquery.tablesorter
+* https://github.com/iainhouston/bootstrap3_player
