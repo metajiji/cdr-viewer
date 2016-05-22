@@ -298,7 +298,7 @@
 				$('#play').removeAttr('disabled');
 				if(!$(this).hasClass('btn-primary')) {
 					$('.playbtn').filter('button[class*="btn-primary"]').removeClass('btn-primary')
-						.addClass('btn-success');
+						.addClass('btn-success').html('<span class="glyphicon glyphicon-play"></span>');
 				}
 				if(song.paused){
 					loadUrl($(this));
