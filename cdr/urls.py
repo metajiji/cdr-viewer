@@ -35,7 +35,7 @@ urlpatterns = [
 
     # Application
     url(r'^$', RedirectView.as_view(pattern_name='home')),
-    url(r'^cdr/', views.home, name='home'),
+    url(r'^cdr/$', views.home, name='home'),
 ]
 
 # TODO: development serve static and media files

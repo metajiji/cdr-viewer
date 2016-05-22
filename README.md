@@ -81,3 +81,5 @@ git filter-branch --force --index-filter \
 * http://mottie.github.io/tablesorter/docs/
 * https://cdnjs.com/libraries/jquery.tablesorter
 * https://github.com/iainhouston/bootstrap3_player
+* https://github.com/dangrossman/bootstrap-daterangepicker
+* http://www.daterangepicker.com/

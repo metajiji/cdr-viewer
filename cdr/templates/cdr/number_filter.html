@@ -1,0 +1,58 @@
+{% load i18n bootstrap3 %}
+
+<div class="form-group">
+	<label for="{{ name }}">{% trans label %}</label>
+	<div class="input-group">
+		<div class="input-group-btn">
+			<button type="button" class="btn btn-default dropdown-toggle"
+					data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">{% bootstrap_icon 'filter' %} {% trans 'Filter' %}
+				<span class="caret"></span><span class="sr-only">{% trans 'Toggle Dropdown' %}</span>
+			</button>
+			<ul class="dropdown-menu">
+				<li>
+					<a href="#">
+						<div class="radio">
+							<label>
+								<input type="radio" name="{{ name }}-option" value="start"{% if option == 'start' %}checked{% endif %}/>
+								{% trans 'Start with' %}
+							</label>
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<div class="radio">
+							<label>
+								<input type="radio" name="{{ name }}-option" value="contains"{% if option == 'contains' %}checked{% endif %}/>
+								{% trans 'Contains' %}
+							</label>
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<div class="radio">
+							<label>
+								<input type="radio" name="{{ name }}-option" value="end"{% if option == 'end' %}checked{% endif %}/>
+								{% trans 'Ends with' %}
+							</label>
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<div class="radio">
+							<label>
+								<input type="radio" name="{{ name }}-option" value="equal"{% if option == 'equal' %}checked{% endif %}/>
+								{% trans 'Equal' %}
+							</label>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div><!--/.input-group-btn-->
+		<input type="text" class="form-control" id="{{ name }}" name="{{ name }}" value="{{ value }}">
+		<span class="input-group-addon">{% trans 'not' %} <input type="checkbox" name="{{ name }}-not"{% if not_checkbox %}checked{% endif %} /></span>
+	</div>
+</div><!--/.form-group-->

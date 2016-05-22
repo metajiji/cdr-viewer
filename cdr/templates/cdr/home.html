@@ -2,71 +2,141 @@
 
 {% load bootstrap3 bootstrap_pagination i18n staticfiles verbose_name %}
 
+{% block bootstrap3_extra_head %}
+	<script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
+	<script type="text/javascript">window.jQuery = window.$ = django.jQuery;</script>
+
+	<link rel="stylesheet" type="text/css" href="{% static 'cdr/css/bootstrap3_player.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'cdr/css/jquery.tablesorter.theme.bootstrap.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'cdr/css/daterangepicker.css' %}" />
+{% endblock %}
+
 {% block title %}Cdr-viewer{% endblock %}
 
 {% block content %}
-	<link href="{% static 'cdr/css/bootstrap3_player.min.css' %}" rel="stylesheet"/>
-
-	<link href="{% static 'cdr/css/jquery.tablesorter.theme.bootstrap.min.css' %}" rel="stylesheet"/>
-	<script src="{% static 'cdr/js/jquery.tablesorter.min.js' %}"></script>
-	<script src="{% static 'cdr/js/jquery.tablesorter.widgets.min.js' %}"></script>
-
-	<div class="container">
-		<div class="row col-md-12 col-xs-12">
-			<div class="table-responsive">
-				<audio id="audio" controls>
-					<source src="#" type="audio/mpeg"/>
-					{% trans 'An html5-capable browser is required to play this audio.' %}
-				</audio>
-				<table id="table" class="table table-bordered table-hover table-striped tablesorter">
-					<thead>
-					<tr>
-						<th class="header">{% get_verbose_field_name calls.0 'calldate' %}</th>
-						<th class="header">{% trans 'File' %}</th>
-						<th class="header">{% get_verbose_field_name calls.0 'duration' %} {% bootstrap_icon 'sort' %}</th>
-						<th class="header">{% get_verbose_field_name calls.0 'src' %} {% bootstrap_icon 'sort' %}</th>
-						<th class="header">{% get_verbose_field_name calls.0 'dst' %} {% bootstrap_icon 'sort' %}</th>
-						<th class="header">{% get_verbose_field_name calls.0 'clid' %}</th>
-						<th class="header">{% get_verbose_field_name calls.0 'dstchannel' %}</th>
-					</tr>
-					</thead>
-					<tbody>
-					{% for c in calls %}
-						<tr>
-							<td>{{ c.calldate }}</td>
-							<td class="text-center">
-								<div class="btn-group btn-group-xs" role="group">
-									<button type="button" audiourl="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3"
-											class="btn btn-success playbtn">{% bootstrap_icon "play" %}</button>
-									<a class="btn btn-default" target="_blank" href="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3"
-									   type="link">{% bootstrap_icon "download-alt" %}</a>
-								</div>
-							</td>
-							<td>{{ c.duration }}</td>
-							<td>{{ c.src }}</td>
-							<td>{{ c.dst }}</td>
-							<td>{{ c.clid }}</td>
-							<td>{{ c.dstchannel }}</td>
-						</tr>
-					{% endfor %}
-					</tbody>
-					<tfoot>
-						<tr>
-							<td colspan="7">
-								{% if calls.paginator.num_pages > 1 %}
-									{% bootstrap_paginate calls range=10 show_index_range='True' show_first_last='True' %}
-								{% endif %}
-							</td>
-						</tr>
-					</tfoot>
-				</table>
-			</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<audio id="audio" controls>
+				<source src="#" type="audio/mpeg"/>
+				{% trans 'An html5-capable browser is required to play this audio.' %}
+			</audio>
 		</div>
-	</div>
+		<div class="panel-body">
 
+			<div class="well well-sm">
+
+				<form method="GET">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="datetimerange1">{% trans 'Date and time' %}</label>
+								<div class="input-group">
+									<span class="input-group-addon">{% bootstrap_icon 'calendar' %}</span>
+									<input type="text" class="form-control" id="datetimerange" value="" name="datetime" placeholder="YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss" />
+								</div>
+							</div><!--/.form-group-->
+							<div class="form-group">
+								<label for="duration">{% trans 'Duration' %}</label>
+								<div class="input-group">
+									<span class="input-group-addon">{% bootstrap_icon 'time' %}</span>
+									<input type="text" class="form-control" id="duration" value="" name="duration" placeholder="HH:mm:ss" />
+								</div>
+							</div><!--/.form-group-->
+							<div class="form-group">
+								<label for="rows">{% trans 'Rows per page' %}</label>
+								<div class="input-group">
+									<span class="input-group-addon">{% bootstrap_icon 'list' %}</span>
+									<input type="text" class="form-control" name="rows" value="{{ rows }}" placeholder="{% trans 'Rows' %}" />
+								</div>
+							</div><!--/.form-group-->
+						</div><!--/.col-md-4-->
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<div class="panel panel-default">
+									<div class="panel-heading"><b>{% bootstrap_icon 'earphone' %} {% trans 'Call state' %}</b></div>
+									<div class="panel-body">
+										{% for call_state, state in call_states %}
+											<div class="checkbox"><label><input type="checkbox" name="call_state-{{ call_state }}"{% if state %}checked{% endif %}>{% trans call_state %}</label></div>
+										{% endfor %}
+									</div>
+								</div>
+							</div><!--/.form-group-->
+						</div><!--/.col-md-4-->
+
+						<div class="col-md-4">
+							{%  for name, value, label, option, not_checkbox in call_filters %}
+								{% include "cdr/number_filter.html" with name=name value=value label=label option=option not_checkbox=not_checkbox %}
+							{% endfor %}
+						</div><!--/.col-md-4-->
+					</div><!--/.row-->
+					{% bootstrap_button _('Submit') button_class='btn-success' button_type='submit' icon='ok' %}
+					<a class="btn btn-primary" target="_blank" href="/cdr/export/csv{#%  url 'cdr:export_csv' %#}"
+					   type="link">{% bootstrap_icon "export" %} {% trans 'Export to CSV' %}</a>
+					{% bootstrap_button _('Reset') button_type='reset' icon='refresh' %}
+				</form>
+			</div><!--/.well well-sm-->
+
+			<table id="table" class="table table-bordered table-hover table-striped tablesorter">
+				<thead>
+				<tr>
+					<th class="header">{% get_verbose_field_name calls.0 'calldate' %}</th>
+					<th class="header" data-sorter="false">{% trans 'File' %}</th>
+					<th class="header">{% get_verbose_field_name calls.0 'duration' %}</th>
+					<th class="header">{% get_verbose_field_name calls.0 'src' %}</th>
+					<th class="header">{% get_verbose_field_name calls.0 'dst' %}</th>
+					<th class="header">{% get_verbose_field_name calls.0 'disposition' %}</th>
+					<th class="header">{% get_verbose_field_name calls.0 'dstchannel' %}</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for c in calls %}
+					<tr>
+						<td>{{ c.calldate | date:'Y-m-d H:i:s' }}</td>
+						<td class="text-center">
+							<div class="btn-group btn-group-xs" role="group">
+								<!-- TODO: check file exists -->
+								<button type="button" audiourl="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3"
+										class="btn btn-success playbtn">{% bootstrap_icon "play" %}</button>
+								<a class="btn btn-default" target="_blank" href="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3"
+								   type="link">{% bootstrap_icon "download-alt" %}</a>
+							</div>
+						</td>
+						<td>{{ c.duration }}</td>
+						<td>{{ c.src }}</td>
+						<td>{{ c.dst }}</td>
+						<td>{{ c.disposition }}</td>
+						<td>{{ c.dstchannel }}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="7" class="text-center">
+							{% if calls.paginator.num_pages > 1 %}
+								{% bootstrap_pagination calls url=request.get_full_path pages_to_show=13 %}
+							{% endif %}
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+		<!--<div class="panel-footer">Panel footer</div>-->
+	</div>
+{% endblock %}
+
+{%  block bootstrap3_extra_script %}
 	<script src="{% static 'cdr/js/bootstrap3_player.js' %}"></script>
+	<script type="text/javascript" src="{% static 'cdr/js/jquery.tablesorter.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'cdr/js/jquery.tablesorter.widgets.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'cdr/js/moment.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'cdr/js/daterangepicker.js' %}"></script>
 	<script>
 		$(function(){
+			$.bootstrap3_player.timeTitle = '{% trans 'Click to Reset' %}';
+			$.bootstrap3_player.timePosition = '{% trans 'Position' %}';
+			$.bootstrap3_player.timeLength = '{% trans 'Length' %}';
+
 			$.tablesorter.themes.bootstrap = {
 				table       : 'table table-bordered table-striped',
 				caption     : 'caption',
@@ -94,7 +164,148 @@
 				headerTemplate : '{content} {icon}',
 				widgets : [ 'uitheme' ]
 			})
+
+
+			$('#datetimerange').daterangepicker({
+				"autoApply": false,
+				"timePicker": true,
+				"timePicker24Hour": true,
+				"timePickerSeconds": true,
+				"linkedCalendars": false,
+				"alwaysShowCalendars": true,
+				"ranges": {
+					"{% trans 'Today' %}": [
+						"{% now 'Y-m-d H:i:s' %}",
+						"{% now 'Y-m-d H:i:s' %}"
+					],
+					"{% trans 'Yesterday' %}": [
+						"2016-05-19T10:50:17.994Z",
+						"2016-05-19T10:50:17.994Z"
+					],
+					"{% trans 'Last 7 Days' %}": [
+						"2016-05-14T10:50:17.994Z",
+						"2016-05-20T10:50:17.994Z"
+					],
+					"{% trans 'Last 30 Days' %}": [
+						"2016-04-21T10:50:17.994Z",
+						"2016-05-20T10:50:17.994Z"
+					],
+					"{% trans 'This Month' %}": [
+						"2016-04-30T18:00:00.000Z",
+						"2016-05-31T17:59:59.999Z"
+					],
+					"{% trans 'Last Month' %}": [
+						"2016-03-31T18:00:00.000Z",
+						"2016-04-30T17:59:59.999Z"
+					]
+				},
+				"locale": {
+					"format": "YYYY-MM-DD HH:mm:ss",  // TODO: get from settings.py
+					"separator": " - ",
+					"applyLabel": "{% trans 'Apply' %}",
+					"cancelLabel": "{% trans 'Cancel' %}",
+					"fromLabel": "{% trans 'From' %}",
+					"toLabel": "{% trans 'To' %}",
+					"customRangeLabel": "{% trans 'Custom' %}",
+					"daysOfWeek": [
+						"{% trans 'Su' %}",
+						"{% trans 'Mo' %}",
+						"{% trans 'Tu' %}",
+						"{% trans 'We' %}",
+						"{% trans 'Th' %}",
+						"{% trans 'Fr' %}",
+						"{% trans 'Sa' %}"
+					],
+					"monthNames": [
+						"{% trans 'January' %}",
+						"{% trans 'February' %}",
+						"{% trans 'March' %}",
+						"{% trans 'April' %}",
+						"{% trans 'May' %}",
+						"{% trans 'June' %}",
+						"{% trans 'July' %}",
+						"{% trans 'August' %}",
+						"{% trans 'September' %}",
+						"{% trans 'October' %}",
+						"{% trans 'November' %}",
+						"{% trans 'December' %}"
+					],
+					"firstDay": 1
+				},
+				"startDate": "{% now 'Y-m-d H:i:s' %}",
+				"endDate": "{% now 'Y-m-d H:i:s' %}"
+			}, function (start, end, label) {
+				console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+			});
+
+			$('#duration').daterangepicker({
+				"autoApply": false,
+				"timePicker": true,
+				"timePicker24Hour": true,
+				"timePickerSeconds": true,
+				"linkedCalendars": false,
+				"alwaysShowCalendars": true,
+				"template": '<div class="daterangepicker dropdown-menu">' +
+					'<div>' +
+						'<div class="calendar left">' +
+							'<label for="datetimerange1">{% trans 'From' %}</label>' +
+							'<div class="daterangepicker_input">' +
+								'<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
+								'<i class="fa fa-calendar glyphicon glyphicon-time"></i>' +
+								'<div class="calendar-time">' +
+									'<div></div>' +
+								'</div>' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+					'<div>' +
+						'<div class="calendar right">' +
+							'<label for="datetimerange1">{% trans 'To' %}</label>' +
+							'<div class="daterangepicker_input">' +
+								'<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
+								'<i class="fa fa-calendar glyphicon glyphicon-time"></i>' +
+								'<div class="calendar-time">' +
+									'<div></div>' +
+								'</div>' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+					'<div class="ranges">' +
+						'<div class="range_inputs">' +
+							'<button class="applyBtn" disabled="disabled" type="button"></button> ' +
+							'<button class="cancelBtn" type="button"></button>' +
+						'</div>' +
+					'</div>' +
+				'</div>',
+				"ranges": {
+					"{% trans '0-5 seconds' %}": [
+						"00:00:00",
+						"00:00:05",
+					],
+					"{% trans '0-10 seconds' %}": [
+						"00:00:00",
+						"00:00:10",
+					],
+					"{% trans '0-30 seconds' %}": [
+						"00:00:00",
+						"00:00:30",
+					],
+					"{% trans '0-1 minute' %}": [
+						"00:00:00",
+						"00:01:00",
+					],
+				},
+					"locale": {
+					"format": "HH:mm:ss",
+					"separator": " - ",
+					"applyLabel": "{% trans 'Apply' %}",
+					"cancelLabel": "{% trans 'Cancel' %}",
+					"customRangeLabel": "{% trans 'Custom' %}",
+				},
+				"startDate": "00:00:00",
+				"endDate": "00:00:00"
+			});
+
 		});
 	</script>
-
-{% endblock %}
+{%  endblock %}

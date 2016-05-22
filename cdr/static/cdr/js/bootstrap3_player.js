@@ -1,12 +1,18 @@
-/* global jQuery */
 (function($){
 	'use strict';
+	$.bootstrap3_player = {
+		timeTitle: 'Click to Reset',
+		timePosition: 'Position',
+		timeLength: 'Length'
+	};
+
 	$('audio[controls]').before(function(){
 		var song = this;
 		song.controls = false;
 
 		var player_box = document.createElement('div');
-		$(player_box).addClass($(song).attr('class') + ' well container-fluid playa');
+		// $(player_box).addClass($(song).attr('class') + ' well container-fluid playa');
+		$(player_box).addClass($(song).attr('class') + ' container-fluid playa');
 
 		var player = document.createElement('section');
 		$(player).addClass('btn-group center-block row col-sm-12');
@@ -134,14 +140,12 @@
 			};  // time.timesplit
 
 			time.showtime = function(){
-				var position_title = 'Click to Reset<hr style="padding:0; margin:0;" />Position: ';
-				var length_title = 'Click to Reset<hr style="padding:0; margin:0;" />Length: ';
-				if(!song.paused){
-					$(time).html(time.timesplit(song.currentTime));
-					$(time).attr({'title': length_title + (time.timesplit(song.duration))});
-				} else {
-					$(time).html(time.timesplit(song.duration));
-					$(time).attr({'title': position_title + (time.timesplit(song.currentTime))});
+				if(!isNaN(song.duration)) {
+					var title = $.bootstrap3_player.timeTitle + '<hr style="padding:0; margin:0;" />'
+						+ $.bootstrap3_player.timePosition + ': ' + time.timesplit(song.currentTime) + '<br />'
+						+ $.bootstrap3_player.timeLength + ': ' + time.timesplit(song.duration);
+					$(time).html(time.timesplit(song.currentTime) + ' / ' + time.timesplit(song.duration));
+					$(time).attr({'title': title});
 				}
 				$(time).tooltip('fixTitle');
 			};  // time.showtime
@@ -236,41 +240,71 @@
 			if(btn.hasClass('btn-danger')){
 				btn.removeClass('btn-danger').addClass('btn-success');
 			}
-			btn.html('<span class="glyphicon glyphicon-pause"></span>');
 			$('#audio source').attr('src', btn.attr('audiourl'));
-			song.load();
+
+			if(! btn.hasClass('btn-primary')){
+				song.load();
+			}
 			song.play();
 
 			var timeout = 0;
-			var loadCheck = setInterval(function(){
-				if(isNaN(song.duration) === false){
+			var loadCheck = setInterval(function () {
+				if (isNaN(song.duration) === false) {
 					$(this).html('<span class="glyphicon glyphicon-success"></span>');
 					clearInterval(loadCheck);
 					return true;
 				}
-				if(song.networkState === 3 || timeout === 100){
+				if (song.networkState === 3 || timeout === 100) {
 					// 3 = NETWORK_NO_SOURCE - no audio/video source found
 					console.log('No audio source was found or a timeout occurred');
-					btn.removeClass('btn-success').addClass('btn-danger');
+					btn.removeClass('btn-success').addClass('btn-danger')
+						.html('<span class="glyphicon glyphicon-stop"></span>');
+					$('#play').html('<span class="glyphicon glyphicon-stop"></span>');
 					load_error();
 					clearInterval(loadCheck);
 					return false;
 				}
 				timeout++;
 			}, 100); // x milliseconds per attempt
+
+			btn.removeClass('btn-success').addClass('btn-primary');
 		};
 
-		var addPlay = function(){
+		var addPlay = function() {
+			var play = document.createElement('button');
+			$(play).addClass('btn btn-default col-sm-1').attr('id', 'play').attr('disabled', 'disabled')
+				.html('<span class="glyphicon glyphicon-play"></span>');
+			$(player).append(play);
+			$(play).click(function(){
+				if(song.paused){
+					song.play();
+				} else {
+					song.pause();
+				}
+			});
+		};
+
+		var bindPlay = function(){
 			$(song).on('pause', function(){
 				$('.playbtn').html('<span class="glyphicon glyphicon-play"></span>');
+				$('#play').html('<span class="glyphicon glyphicon-play"></span>');
+			});
+			$(song).on('play', function(){
+				$('.playbtn').filter('button[class*="btn-primary"]')
+					.html('<span class="glyphicon glyphicon-pause"></span>');
+				$('#play').html('<span class="glyphicon glyphicon-pause"></span>');
 			});
 			$('.playbtn').on('click', function(){
-				if (song.paused) {
+				$('#play').removeAttr('disabled');
+				if(!$(this).hasClass('btn-primary')) {
+					$('.playbtn').filter('button[class*="btn-primary"]').removeClass('btn-primary')
+						.addClass('btn-success');
+				}
+				if(song.paused){
 					loadUrl($(this));
 				}else{
 					if($(this).find('span').hasClass('glyphicon-play')){
 						song.pause();
-						$('.playbtn').html('<span class="glyphicon glyphicon-play"></span>');
 						loadUrl($(this));
 					}else{
 						song.pause();
@@ -279,7 +313,7 @@
 			});
 		};
 
-		if($(song).data('play') !== 'off'){addPlay()}
+		if($(song).data('play') !== 'off'){addPlay();bindPlay()}
 		if($(song).data('seek') !== 'off'){addSeek()}
 		if($(song).data('time') !== 'off'){addTime()}
 		if($(song).data('mute') !== 'off'){addMute()}

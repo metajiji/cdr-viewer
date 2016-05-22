@@ -130,6 +130,8 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
 BOOTSTRAP3 = {
+    'base_url': '%sbootstrap/' % STATIC_URL,
+    'jquery_url': '%sadmin/js/vendor/jquery/jquery.min.js' % STATIC_URL,
     'theme_url': '%scdr/css/style.css' % STATIC_URL,
     'javascript_in_head': True,
 }
