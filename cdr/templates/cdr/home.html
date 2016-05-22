@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load bootstrap3 bootstrap_pagination i18n staticfiles verbose_name %}
+{% load bootstrap3 i18n staticfiles verbose_name %}
 
 {% block bootstrap3_extra_head %}
 	<script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
@@ -24,40 +24,21 @@
 		<div class="panel-body">
 
 			<div class="well well-sm">
-
 				<form method="GET">
 					<div class="row">
 						<div class="col-md-4">
-							<div class="form-group">
-								<label for="datetimerange1">{% trans 'Date and time' %}</label>
-								<div class="input-group">
-									<span class="input-group-addon">{% bootstrap_icon 'calendar' %}</span>
-									<input type="text" class="form-control" id="datetimerange" value="" name="datetime" placeholder="YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss" />
-								</div>
-							</div><!--/.form-group-->
-							<div class="form-group">
-								<label for="duration">{% trans 'Duration' %}</label>
-								<div class="input-group">
-									<span class="input-group-addon">{% bootstrap_icon 'time' %}</span>
-									<input type="text" class="form-control" id="duration" value="" name="duration" placeholder="HH:mm:ss" />
-								</div>
-							</div><!--/.form-group-->
-							<div class="form-group">
-								<label for="rows">{% trans 'Rows per page' %}</label>
-								<div class="input-group">
-									<span class="input-group-addon">{% bootstrap_icon 'list' %}</span>
-									<input type="text" class="form-control" name="rows" value="{{ rows }}" placeholder="{% trans 'Rows' %}" />
-								</div>
-							</div><!--/.form-group-->
+							{% bootstrap_field cdr_form.datetime addon_before='<span class="glyphicon glyphicon-calendar"></span>' bound_css_class='' %}
+							{% bootstrap_field cdr_form.duration addon_before='<span class="glyphicon glyphicon-time"></span>' bound_css_class='' %}
+							{% bootstrap_field cdr_form.rows addon_before='<span class="glyphicon glyphicon-list"></span>' bound_css_class='' %}
 						</div><!--/.col-md-4-->
 
 						<div class="col-md-4">
 							<div class="form-group">
 								<div class="panel panel-default">
-									<div class="panel-heading"><b>{% bootstrap_icon 'earphone' %} {% trans 'Call state' %}</b></div>
+									<div class="panel-heading"><b>{% bootstrap_icon 'earphone' %} {{ cdr_form.call_state.label }}</b></div>
 									<div class="panel-body">
-										{% for call_state, state in call_states %}
-											<div class="checkbox"><label><input type="checkbox" name="call_state-{{ call_state }}"{% if state %}checked{% endif %}>{% trans call_state %}</label></div>
+										{% for c in cdr_form.call_state %}
+											<div class="checkbox">{{ c }}</div>
 										{% endfor %}
 									</div>
 								</div>
@@ -65,9 +46,30 @@
 						</div><!--/.col-md-4-->
 
 						<div class="col-md-4">
-							{%  for name, value, label, option, not_checkbox in call_filters %}
-								{% include "cdr/number_filter.html" with name=name value=value label=label option=option not_checkbox=not_checkbox %}
-							{% endfor %}
+							<div class="form-group">
+								<label for="{{ cdr_form.src_number.name }}">{{ cdr_form.src_number.label }}</label>
+								<div class="input-group">
+									<span class="input-group-btn">{{ cdr_form.src_number_option }}</span>
+									{{ cdr_form.src_number }}
+									<span class="input-group-addon">{{ cdr_form.src_number_not.label }} {{ cdr_form.src_number_not }}</span>
+								</div>
+							</div><!--/.form-group-->
+							<div class="form-group">
+								<label for="{{ cdr_form.dst_number.name }}">{{ cdr_form.dst_number.label }}</label>
+								<div class="input-group">
+									<span class="input-group-btn">{{ cdr_form.dst_number_option }}</span>
+									{{ cdr_form.dst_number }}
+									<span class="input-group-addon">{{ cdr_form.dst_number_not.label }} {{ cdr_form.dst_number_not }}</span>
+								</div>
+							</div><!--/.form-group-->
+							<div class="form-group">
+								<label for="{{ cdr_form.dispatcher_number.name }}">{{ cdr_form.dispatcher_number.label }}</label>
+								<div class="input-group">
+									<span class="input-group-btn">{{ cdr_form.dispatcher_number_option }}</span>
+									{{ cdr_form.dispatcher_number }}
+									<span class="input-group-addon">{{ cdr_form.dispatcher_number_not.label }} {{ cdr_form.dispatcher_number_not }}</span>
+								</div>
+							</div><!--/.form-group-->
 						</div><!--/.col-md-4-->
 					</div><!--/.row-->
 					{% bootstrap_button _('Submit') button_class='btn-success' button_type='submit' icon='ok' %}
@@ -166,7 +168,7 @@
 			})
 
 
-			$('#datetimerange').daterangepicker({
+			$('#{{ cdr_form.datetime.auto_id }}').daterangepicker({
 				"autoApply": false,
 				"timePicker": true,
 				"timePicker24Hour": true,
@@ -238,7 +240,7 @@
 				console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
 			});
 
-			$('#duration').daterangepicker({
+			$('#{{ cdr_form.duration.auto_id }}').daterangepicker({
 				"autoApply": false,
 				"timePicker": true,
 				"timePicker24Hour": true,

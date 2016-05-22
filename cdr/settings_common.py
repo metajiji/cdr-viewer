@@ -45,7 +45,6 @@ INSTALLED_APPS = [
 
     # Custom plugins
     'bootstrap3',  # django-bootstrap3
-    'bootstrap_pagination',  # django-bootstrap-pagination
 ]
 
 MIDDLEWARE_CLASSES = [
