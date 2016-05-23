@@ -8,12 +8,13 @@ class DateTimeForm(forms.Form):
 
 
 class DurationTimeForm(forms.Form):
-    start = forms.DateTimeField(required=False)
-    end = forms.DateTimeField(required=False)
+    start = forms.TimeField(required=False)
+    end = forms.TimeField(required=False)
 
 
 class AsteriskForm(forms.Form):
     rows = forms.IntegerField(max_value=50, min_value=3, required=False, label=_('Rows per page'))
+    page = forms.IntegerField(required=False)
     datetime = forms.CharField(required=False, label=_('Date and time range'))
     duration = forms.CharField(required=False, label=_('Duration range'))
 

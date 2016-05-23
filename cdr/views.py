@@ -24,9 +24,12 @@ def home(request):
                 if datetime_form.is_valid():
                     print('datetime_form.cleaned_data.start: %s' % datetime_form.cleaned_data.get('start'))
                     print('datetime_form.cleaned_data.end: %s' % datetime_form.cleaned_data.get('end'))
+                else:
+                    # TODO: add_error to cdr_form.datetime
+                    print('datetime field must be format "YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss"')
             else:
                 # TODO: add_error to cdr_form.datetime
-                print('datetime field must be format "YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss"')
+                print('datetime field is invalid, this field must be format "YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss"')
 
         duration = request.GET.get('duration', None)
         if duration is not None:
@@ -38,22 +41,22 @@ def home(request):
                 if duration_form.is_valid():
                     print('duration_form.cleaned_data.start: %s' % duration_form.cleaned_data.get('start'))
                     print('duration_form.cleaned_data.end: %s' % duration_form.cleaned_data.get('end'))
+                else:
+                    # TODO: add_error to cdr_form.duration
+                    print('duration field is invalid, this field must be format "HH:mm:ss - HH:mm:ss"')
             else:
                 # TODO: add_error to cdr_form.duration
                 print('duration field must be format "HH:mm:ss - HH:mm:ss"')
 
-        cdr_form = AsteriskForm(request.GET)
+        rows = 10
+        page = 1
+        cdr_form = AsteriskForm(request.GET or None, initial={'rows': rows})
         if cdr_form.is_valid():
+            rows = cdr_form.cleaned_data.get('rows', rows) or rows
+            page = cdr_form.cleaned_data.get('page', page) or page
             print('cdr_form.cleaned_data: %s' % cdr_form.cleaned_data)
 
         calls_list = Asterisk.objects.all()
-        rows = request.GET.get('rows')
-        if not rows or rows is None:
-            rows = 10
-
-        page = request.GET.get('page')
-        if not page or page is None:
-            page = 1
 
         paginator = Paginator(calls_list, rows)  # Show 'count' calls per page
         try:
@@ -67,8 +70,6 @@ def home(request):
 
         date = datetime.datetime.now()
         return render(request, 'cdr/home.html', {
-            # 'call_filters': call_filters,
-            # 'call_states': call_states,
             'yesterday': date - datetime.timedelta(days=1),
             'week_ago': date - datetime.timedelta(days=7),
             '2week_ago': date - datetime.timedelta(days=14),
@@ -76,7 +77,6 @@ def home(request):
             'last_month': datetime.date(date.year, date.month-1, calendar.monthrange(date.year, date.month-1)[1]),
             'cdr_form': cdr_form,
             'calls': calls,
-            # 'rows': rows
         })
 
     return HttpResponseForbidden()
