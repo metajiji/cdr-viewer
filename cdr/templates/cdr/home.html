@@ -160,7 +160,6 @@
 				even        : '',  // even row zebra striping
 				odd         : ''  // odd row zebra striping
 			};
-
 			$('table').tablesorter({
 				theme : 'bootstrap',
 				headerTemplate : '{content} {icon}',
@@ -177,28 +176,28 @@
 				"alwaysShowCalendars": true,
 				"ranges": {
 					"{% trans 'Today' %}": [
-						"{% now 'Y-m-d H:i:s' %}",
+						"{% now 'Y-m-d' %} 00:00:00",
 						"{% now 'Y-m-d H:i:s' %}"
 					],
 					"{% trans 'Yesterday' %}": [
-						"2016-05-19T10:50:17.994Z",
-						"2016-05-19T10:50:17.994Z"
+						"{{ yesterday|date:'Y-m-d' }} 00:00:00",
+						"{{ yesterday|date:'Y-m-d' }} 23:59:59"
 					],
 					"{% trans 'Last 7 Days' %}": [
-						"2016-05-14T10:50:17.994Z",
-						"2016-05-20T10:50:17.994Z"
+						"{{ week_ago|date:'Y-m-d' }} 00:00:00",
+						"{% now 'Y-m-d H:i:s' %}"
 					],
-					"{% trans 'Last 30 Days' %}": [
-						"2016-04-21T10:50:17.994Z",
-						"2016-05-20T10:50:17.994Z"
+					"{% trans 'Last 14 Days' %}": [
+						"{{ 2week_ago|date:'Y-m-d' }} 00:00:00",
+						"{% now 'Y-m-d H:i:s' %}"
 					],
 					"{% trans 'This Month' %}": [
-						"2016-04-30T18:00:00.000Z",
-						"2016-05-31T17:59:59.999Z"
+						"{{ this_month|date:'Y-m-01' }} 00:00:00",
+						"{% now 'Y-m-d H:i:s' %}"
 					],
 					"{% trans 'Last Month' %}": [
-						"2016-03-31T18:00:00.000Z",
-						"2016-04-30T17:59:59.999Z"
+						"{{ last_month|date:'Y-m-01' }} 00:00:00",
+						"{{ last_month|date:'Y-m-d' }} 23:59:59"
 					]
 				},
 				"locale": {
@@ -298,7 +297,7 @@
 					],
 				},
 					"locale": {
-					"format": "HH:mm:ss",
+					"format": "{%  trans 'HH:mm:ss' %}",
 					"separator": " - ",
 					"applyLabel": "{% trans 'Apply' %}",
 					"cancelLabel": "{% trans 'Cancel' %}",

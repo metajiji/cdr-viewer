@@ -4,6 +4,8 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render
 from .forms import AsteriskForm, DateTimeForm, DurationTimeForm
 from .models import Asterisk
+import datetime
+import calendar
 
 
 @login_required
@@ -12,12 +14,12 @@ def home(request):
 
         # TODO: Validate here fields 'datetime' and 'duration' manually
         data = dict()
-        datetime = request.GET.get('datetime', None)
-        if datetime is not None:
-            datetime = datetime.split()
-            if len(datetime) == 5:  # field format: 'YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss'
-                data['start'] = '%s %s' % (datetime[0], datetime[1])
-                data['end'] = '%s %s' % (datetime[3], datetime[4])
+        date_time = request.GET.get('datetime', None)
+        if date_time is not None:
+            date_time = date_time.split()
+            if len(date_time) == 5:  # field format: 'YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss'
+                data['start'] = '%s %s' % (date_time[0], date_time[1])
+                data['end'] = '%s %s' % (date_time[3], date_time[4])
                 datetime_form = DateTimeForm(data=data)
                 if datetime_form.is_valid():
                     print('datetime_form.cleaned_data.start: %s' % datetime_form.cleaned_data.get('start'))
@@ -63,9 +65,15 @@ def home(request):
             # If page is out of range (e.g. 9999), deliver last page of results.
             calls = paginator.page(paginator.num_pages)
 
+        date = datetime.datetime.now()
         return render(request, 'cdr/home.html', {
             # 'call_filters': call_filters,
             # 'call_states': call_states,
+            'yesterday': date - datetime.timedelta(days=1),
+            'week_ago': date - datetime.timedelta(days=7),
+            '2week_ago': date - datetime.timedelta(days=14),
+            'this_month': datetime.date(date.year, date.month, calendar.monthrange(date.year, date.month)[1]),
+            'last_month': datetime.date(date.year, date.month-1, calendar.monthrange(date.year, date.month-1)[1]),
             'cdr_form': cdr_form,
             'calls': calls,
             # 'rows': rows
