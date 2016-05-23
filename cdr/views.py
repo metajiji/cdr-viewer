@@ -12,7 +12,6 @@ import calendar
 def home(request):
     if request.method == 'GET':
 
-        # TODO: Validate here fields 'datetime' and 'duration' manually
         data = dict()
         date_time = request.GET.get('datetime', None)
         if date_time is not None:
