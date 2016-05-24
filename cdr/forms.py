@@ -48,6 +48,12 @@ class AsteriskForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(AsteriskForm, self).__init__(*args, **kwargs)
 
+        self.datetime_start = None
+        self.datetime_end = None
+
+        self.duration_start = None
+        self.duration_end = None
+
         self.fields['datetime'].widget.attrs['class'] = 'form-control'
         self.fields['datetime'].widget.attrs['placeholder'] = 'YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss'
 
@@ -62,3 +68,41 @@ class AsteriskForm(forms.Form):
 
         self.fields['dispatcher_number'].widget.attrs['class'] = 'form-control'
         self.fields['dispatcher_number_option'].widget.attrs['class'] = 'btn'
+
+    def clean(self):
+        cleaned_data = super(AsteriskForm, self).clean()
+
+        date_time = cleaned_data.get('datetime', None)
+        if date_time is not None:
+            date_time = date_time.split()
+            if len(date_time) == 5:  # field format: 'YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss'
+                datetime_form = DateTimeForm(data={
+                    'start': '%s %s' % (date_time[0], date_time[1]),
+                    'end': '%s %s' % (date_time[3], date_time[4])
+                })
+                if datetime_form.is_valid():
+                    self.datetime_start = datetime_form.cleaned_data.get('start')
+                    self.datetime_end = datetime_form.cleaned_data.get('end')
+                else:
+                    self.add_error('datetime', _('datetime field is invalid, this field must be in format '
+                                                 '"YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss"'))
+            else:
+                self.add_error('datetime', _('datetime field must be format '
+                                             '"YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss"'))
+
+        duration = cleaned_data.get('duration', None)
+        if duration is not None:
+            duration = duration.split()
+            if len(duration) == 3:  # field format: 'HH:mm:ss - HH:mm:ss'
+                duration_form = DurationTimeForm(data={
+                    'start': duration[0],
+                    'end': duration[2]
+                })
+                if duration_form.is_valid():
+                    self.duration_start = duration_form.cleaned_data.get('start')
+                    self.duration_end = duration_form.cleaned_data.get('end')
+                else:
+                    self.add_error('duration', _('duration field is invalid, this field must be format '
+                                                 '"HH:mm:ss - HH:mm:ss"'))
+            else:
+                self.add_error('duration', _('duration field must be in format "HH:mm:ss - HH:mm:ss"'))

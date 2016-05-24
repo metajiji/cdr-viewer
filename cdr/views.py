@@ -12,41 +12,6 @@ import calendar
 def home(request):
     if request.method == 'GET':
 
-        data = dict()
-        date_time = request.GET.get('datetime', None)
-        if date_time is not None:
-            date_time = date_time.split()
-            if len(date_time) == 5:  # field format: 'YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss'
-                data['start'] = '%s %s' % (date_time[0], date_time[1])
-                data['end'] = '%s %s' % (date_time[3], date_time[4])
-                datetime_form = DateTimeForm(data=data)
-                if datetime_form.is_valid():
-                    print('datetime_form.cleaned_data.start: %s' % datetime_form.cleaned_data.get('start'))
-                    print('datetime_form.cleaned_data.end: %s' % datetime_form.cleaned_data.get('end'))
-                else:
-                    # TODO: add_error to cdr_form.datetime
-                    print('datetime field must be format "YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss"')
-            else:
-                # TODO: add_error to cdr_form.datetime
-                print('datetime field is invalid, this field must be format "YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss"')
-
-        duration = request.GET.get('duration', None)
-        if duration is not None:
-            duration = duration.split()
-            if len(duration) == 3:  # field format: 'HH:mm:ss - HH:mm:ss'
-                data['start'] = duration[0]
-                data['end'] = duration[2]
-                duration_form = DurationTimeForm(data=data)
-                if duration_form.is_valid():
-                    print('duration_form.cleaned_data.start: %s' % duration_form.cleaned_data.get('start'))
-                    print('duration_form.cleaned_data.end: %s' % duration_form.cleaned_data.get('end'))
-                else:
-                    # TODO: add_error to cdr_form.duration
-                    print('duration field is invalid, this field must be format "HH:mm:ss - HH:mm:ss"')
-            else:
-                # TODO: add_error to cdr_form.duration
-                print('duration field must be format "HH:mm:ss - HH:mm:ss"')
-
         rows = 10
         page = 1
         cdr_form = AsteriskForm(request.GET or None, initial={'rows': rows})
@@ -54,6 +19,10 @@ def home(request):
             rows = cdr_form.cleaned_data.get('rows', rows) or rows
             page = cdr_form.cleaned_data.get('page', page) or page
             print('cdr_form.cleaned_data: %s' % cdr_form.cleaned_data)
+            print('cdr_form.duration_start:%s' % cdr_form.duration_start)
+            print('cdr_form.duration_end:%s' % cdr_form.duration_end)
+            print('cdr_form.datetime_start:%s' % cdr_form.datetime_start)
+            print('cdr_form.datetime_end:%s' % cdr_form.datetime_end)
 
         calls_list = Asterisk.objects.all()
 
