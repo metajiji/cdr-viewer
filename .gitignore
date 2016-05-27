@@ -5,4 +5,5 @@ venv/
 logs/*
 public/*
 !*.gitkeep
+!public/favicon.ico
 cdr/settings.py
