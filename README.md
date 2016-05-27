@@ -4,6 +4,7 @@
 
 ```bash
 virtualenv -p python2 --prompt="(cdr-viewer)" venv
+. venv/bin/activate
 pip install --upgrade pip
 django-admin startproject cdr .
 python manage.py migrate
