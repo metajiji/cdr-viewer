@@ -31,10 +31,6 @@ class AsteriskForm(forms.Form):
     dst_number = forms.CharField(required=False, label=_('Dst Number'))
     dst_number_not = forms.BooleanField(required=False, label=_('not'))
     dst_number_option = forms.ChoiceField(required=False, choices=FILTER_CHOICES)
-    # dispatcher_number
-    dispatcher_number = forms.CharField(required=False, label=_('Dispatcher Number'))
-    dispatcher_number_not = forms.BooleanField(required=False, label=_('not'))
-    dispatcher_number_option = forms.ChoiceField(required=False, choices=FILTER_CHOICES)
 
     CALL_STATUS_LIST = (
         ('INVALID_NUMBER_FORMAT', _('INVALID_NUMBER_FORMAT',)),
@@ -65,9 +61,6 @@ class AsteriskForm(forms.Form):
 
         self.fields['dst_number'].widget.attrs['class'] = 'form-control'
         self.fields['dst_number_option'].widget.attrs['class'] = 'btn'
-
-        self.fields['dispatcher_number'].widget.attrs['class'] = 'form-control'
-        self.fields['dispatcher_number_option'].widget.attrs['class'] = 'btn'
 
     def clean(self):
         cleaned_data = super(AsteriskForm, self).clean()

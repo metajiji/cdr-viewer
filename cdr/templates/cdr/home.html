@@ -62,14 +62,6 @@
 									<span class="input-group-addon">{{ cdr_form.dst_number_not.label }} {{ cdr_form.dst_number_not }}</span>
 								</div>
 							</div><!--/.form-group-->
-							<div class="form-group">
-								<label for="{{ cdr_form.dispatcher_number.name }}">{{ cdr_form.dispatcher_number.label }}</label>
-								<div class="input-group">
-									<span class="input-group-btn">{{ cdr_form.dispatcher_number_option }}</span>
-									{{ cdr_form.dispatcher_number }}
-									<span class="input-group-addon">{{ cdr_form.dispatcher_number_not.label }} {{ cdr_form.dispatcher_number_not }}</span>
-								</div>
-							</div><!--/.form-group-->
 						</div><!--/.col-md-4-->
 					</div><!--/.row-->
 					{% bootstrap_button _('Submit') button_class='btn-success' button_type='submit' icon='ok' %}
