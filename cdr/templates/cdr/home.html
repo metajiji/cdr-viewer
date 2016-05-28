@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load bootstrap3 i18n staticfiles verbose_name %}
+{% load bootstrap3 i18n staticfiles verbose_name to_time %}
 
 {% block bootstrap3_extra_head %}
 	<script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
@@ -105,7 +105,7 @@
 								   type="link">{% bootstrap_icon "download-alt" %}</a>
 							</div>
 						</td>
-						<td>{{ c.duration }}</td>
+						<td>{{ c.duration | to_time | time:'H:i:s' }}</td>
 						<td>{{ c.src }}</td>
 						<td>{{ c.dst }}</td>
 						<td>{{ c.disposition }}</td>
@@ -305,8 +305,8 @@
 					"cancelLabel": "{% trans 'Cancel' %}",
 					"customRangeLabel": "{% trans 'Custom' %}"
 				},
-				"startDate": "00:00:00",
-				"endDate": "00:00:00"
+				"startDate": "{% if cdr_form.duration_start %}{{ cdr_form.duration_start|time:'H:i:s' }}{% else %}00:00:00{% endif %}",
+				"endDate": "{% if cdr_form.duration_end %}{{ cdr_form.duration_end|time:'H:i:s' }}{% else %}00:00:00{% endif %}"
 			});
 
 		});

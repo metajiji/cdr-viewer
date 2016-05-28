@@ -95,8 +95,8 @@ class AsteriskForm(forms.Form):
             duration = duration.split()
             if len(duration) == 3:  # field format: 'HH:mm:ss - HH:mm:ss'
                 duration_form = DurationTimeForm(data={
-                    'start': duration[0],
-                    'end': duration[2]
+                    'start': duration[0] if duration[0] != '00:00:00' else None,
+                    'end': duration[2] if duration[2] != '00:00:00' else None
                 })
                 if duration_form.is_valid():
                     self.duration_start = duration_form.cleaned_data.get('start')
