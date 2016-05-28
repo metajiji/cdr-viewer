@@ -24,11 +24,11 @@ class AsteriskForm(forms.Form):
         ('equal', _('Equal'),),
         ('contains', _('Contains'),),)
     # src_number
-    src_number = forms.CharField(required=False, label=_('Src Number'))
+    src_number = forms.CharField(required=False, label=_('Source Number'))
     src_number_not = forms.BooleanField(required=False, label=_('not'))
     src_number_option = forms.ChoiceField(required=False, choices=FILTER_CHOICES)
     # dst_number
-    dst_number = forms.CharField(required=False, label=_('Dst Number'))
+    dst_number = forms.CharField(required=False, label=_('Destination Number'))
     dst_number_not = forms.BooleanField(required=False, label=_('not'))
     dst_number_option = forms.ChoiceField(required=False, choices=FILTER_CHOICES)
 
