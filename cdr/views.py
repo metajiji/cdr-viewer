@@ -69,8 +69,8 @@ def home(request):
             #     if cdr_form.cleaned_data['dispatcher_number_option'] == 'start':
             #         if 'dispatcher_number_not' in request.GET:
 
-            # calls_list = calls_list.filter(calldate__gte=cdr_form.datetime_start, calldate__lte=cdr_form.datetime_end)
-            calls_list = calls_list.filter(calldate__range=(cdr_form.datetime_start, cdr_form.datetime_end))
+            if cdr_form.datetime_start and cdr_form.datetime_end:
+                calls_list = calls_list.filter(calldate__range=(cdr_form.datetime_start, cdr_form.datetime_end))
 
             # TODO: duration
             # calls_list = calls_list.filter(duration__range=(cdr_form.duration_start, cdr_form.duration_end))

@@ -73,7 +73,7 @@ class AsteriskForm(forms.Form):
         cleaned_data = super(AsteriskForm, self).clean()
 
         date_time = cleaned_data.get('datetime', None)
-        if date_time is not None:
+        if date_time is not None and date_time != '':
             date_time = date_time.split()
             if len(date_time) == 5:  # field format: 'YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss'
                 datetime_form = DateTimeForm(data={
@@ -91,7 +91,7 @@ class AsteriskForm(forms.Form):
                                              '"YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss"'))
 
         duration = cleaned_data.get('duration', None)
-        if duration is not None:
+        if duration is not None and duration != '':
             duration = duration.split()
             if len(duration) == 3:  # field format: 'HH:mm:ss - HH:mm:ss'
                 duration_form = DurationTimeForm(data={
