@@ -65,7 +65,7 @@
 						</div><!--/.col-md-4-->
 					</div><!--/.row-->
 					{% bootstrap_button _('Submit') button_class='btn-success' button_type='submit' icon='ok' %}
-					<a class="btn btn-primary" target="_blank" href="/cdr/export/csv{#%  url 'cdr:export_csv' %#}"
+					<a class="btn btn-primary" target="_blank" href="{% url 'cdr_action' action='export_csv' %}{% if request.GET.urlencode %}?{{ request.GET.urlencode }}{% endif %}"
 					   type="link">{% bootstrap_icon "export" %} {% trans 'Export to CSV' %}</a>
 					{% bootstrap_button _('Reset') button_type='reset' icon='refresh' %}
 				</form>

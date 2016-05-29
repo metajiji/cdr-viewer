@@ -1,15 +1,16 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, StreamingHttpResponse
 from django.shortcuts import render
 from .forms import AsteriskForm
 from .models import Asterisk
 import datetime
 import calendar
+import csv
 
 
 @login_required
-def home(request):
+def home(request, action=None):
     if request.method == 'GET':
         calls_list = Asterisk.objects.all()
 
@@ -87,7 +88,39 @@ def home(request):
             # If page is out of range (e.g. 9999), deliver last page of results.
             calls = paginator.page(paginator.num_pages)
 
+        if action == 'export_csv':
+            class Echo(object):
+                """An object that implements just the write method of the file-like interface."""
+                def write(self, value):
+                    """Write the value by returning it, instead of storing in a buffer."""
+                    return value
+
+            pseudo_buffer = Echo()
+            writer = csv.writer(pseudo_buffer)
+            headers = [f.name for f in calls_list.model._meta.fields]
+
+            def csv_generator():
+                yield [h.verbose_name.title() for h in calls_list.model._meta.fields]
+                for obj in calls_list:
+                    row = list()
+                    for field in headers:
+                        val = getattr(obj, field)
+                        if callable(val):
+                            val = val()
+                        if type(val) == unicode:
+                            val = val.encode('utf-8')
+                        row.append(val)
+                    yield row
+
+            response = StreamingHttpResponse((writer.writerow(row) for row in csv_generator()), content_type='text/csv')
+
+            response['Content-Disposition'] = 'attachment; filename="%s"' % 'calls.csv'
+            response['Cache-Control'] = 'no-cache'
+
+            return response
+
         date = datetime.datetime.now()
+
         return render(request, 'cdr/home.html', {
             'yesterday': date - datetime.timedelta(days=1),
             'week_ago': date - datetime.timedelta(days=7),
