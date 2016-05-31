@@ -57,7 +57,28 @@ python -m smtpd -n -c DebuggingServer localhost:1025
 
 ## Localization
 
-### Compile `.mo` files from `.po`:
+### Use django way (rocommended)
+
+#### Initial generate from python code and templates files:
+
+```bash
+. venv/bin/activate
+cd cdr
+[ -d locale ] || mkdir locale
+python ../manage.py makemessages --locale=ru_RU --no-location
+python ../manage.py compilemessages --locale=ru_RU
+```
+
+#### Update from python code and templates files:
+
+```bash
+. venv/bin/activate
+cd cdr
+python ../manage.py makemessages --locale=ru_RU --no-location
+python ../manage.py compilemessages --locale=ru_RU
+```
+
+## Or use native os tools (not recommended)
 ```bash
 find accounts/locale -name *.po | sed 's/\.po$//g' | xargs -i{} msgfmt {}.po -o {}.mo
 ```
@@ -72,6 +93,9 @@ git filter-branch --force --index-filter \
 ```
 
 # LINKS
+
+## Django translation
+* https://docs.djangoproject.com/en/1.9/topics/i18n/translation/
 
 ## Media files
 * http://stackoverflow.com/questions/8600843/serving-large-files-with-high-loads-in-django
