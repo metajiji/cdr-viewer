@@ -10,7 +10,7 @@ class Asterisk(models.Model):
             billsec int NOT NULL DEFAULT '0',
             duration int NOT NULL DEFAULT '0',
             amaflags int NOT NULL DEFAULT '0',
-            sequence int NOT NULL DEFAULT '',
+            sequence int NOT NULL DEFAULT '0',
             src varchar (80) NOT NULL DEFAULT '',
             dst varchar (80) NOT NULL DEFAULT '',
             clid varchar (80) NOT NULL DEFAULT '',
