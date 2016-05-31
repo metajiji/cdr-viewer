@@ -34,9 +34,9 @@ def nav_active(request_uri, uris, data='active', **kwargs):
         match = resolve(request_uri)
         try:
             if reverse(uri, kwargs=match.kwargs) == request_uri:
-                for key, value in kwargs.iteritems():
+                for key in kwargs:
                     if key in match.kwargs:
-                        if str(value) != str(match.kwargs[key]):
+                        if str(kwargs[key]) != str(match.kwargs[key]):
                             return ''
                 return data
         except NoReverseMatch:
