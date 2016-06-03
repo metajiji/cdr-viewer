@@ -33,11 +33,11 @@ class AsteriskForm(forms.Form):
     dst_number_option = forms.ChoiceField(required=False, choices=FILTER_CHOICES)
 
     CALL_STATUS_LIST = (
-        ('INVALID_NUMBER_FORMAT', _('INVALID_NUMBER_FORMAT',)),
-        ('NORMAL_CLEARING', _('NORMAL_CLEARING',)),
-        ('CALL_REJECTED', _('CALL_REJECTED',)),
-        ('USER_BUSY', _('USER_BUSY',)),
-        ('NO_ANSWER', _('NO_ANSWER',)),)
+        ('INVALID_NUMBER_FORMAT', _('INVALID_NUMBER_FORMAT', )),
+        ('NORMAL_CLEARING', _('NORMAL_CLEARING', )),
+        ('CALL_REJECTED', _('CALL_REJECTED', )),
+        ('USER_BUSY', _('USER_BUSY', )),
+        ('NO_ANSWER', _('NO_ANSWER', )),)
     call_state = forms.MultipleChoiceField(required=False, choices=CALL_STATUS_LIST, label=_('Call state'),
                                            widget=forms.CheckboxSelectMultiple)
 
@@ -78,10 +78,10 @@ class AsteriskForm(forms.Form):
                     self.datetime_end = datetime_form.cleaned_data.get('end')
                 else:
                     self.add_error('datetime', _('datetime field is invalid, this field must be in format '
-                                                 '"YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss"'))
+                                                 '"%(format)s - %(format)s"') % {'format': _('YYYY-MM-DD HH:mm:ss')})
             else:
                 self.add_error('datetime', _('datetime field must be format '
-                                             '"YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss"'))
+                                             '"%(format)s - %(format)s"') % {'format': _('YYYY-MM-DD HH:mm:ss')})
 
         duration = cleaned_data.get('duration', None)
         if duration is not None and duration != '':
@@ -95,7 +95,8 @@ class AsteriskForm(forms.Form):
                     self.duration_start = duration_form.cleaned_data.get('start')
                     self.duration_end = duration_form.cleaned_data.get('end')
                 else:
-                    self.add_error('duration', _('duration field is invalid, this field must be format '
-                                                 '"HH:mm:ss - HH:mm:ss"'))
+                    self.add_error('duration', _('duration field is invalid, this field must be in format '
+                                                 '"%(format)s - %(format)s"') % {'format': _('HH:mm:ss')})
             else:
-                self.add_error('duration', _('duration field must be in format "HH:mm:ss - HH:mm:ss"'))
+                self.add_error('duration', _('duration field must be in format '
+                                             '"%(format)s - %(format)s"') % {'format': _('HH:mm:ss')})

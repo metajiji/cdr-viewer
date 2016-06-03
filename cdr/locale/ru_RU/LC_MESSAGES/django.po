@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-31 17:44+0000\n"
+"POT-Creation-Date: 2016-06-03 04:59+0000\n"
 "PO-Revision-Date: 2016-05-31 23:18+NOVT\n"
 "Last-Translator: Denis Kadyshev <metajiji@gmail.com>\n"
 "Language-Team: Russian <metajiji@gmail.com>\n"
@@ -20,31 +20,31 @@ msgid "Rows per page"
 msgstr "Строк на страницу"
 
 msgid "Date and time range"
-msgstr ""
+msgstr "Дата и время"
 
 msgid "Duration range"
-msgstr ""
+msgstr "Продолжительность"
 
 msgid "Starts with"
-msgstr ""
+msgstr "Начинается с"
 
 msgid "Ends with"
-msgstr ""
+msgstr "Заканчивается на"
 
 msgid "Equal"
-msgstr ""
+msgstr "Равно"
 
 msgid "Contains"
-msgstr ""
+msgstr "Содержит"
 
 msgid "Source Number"
-msgstr ""
+msgstr "Входящий номер"
 
 msgid "not"
-msgstr ""
+msgstr "Не"
 
 msgid "Destination Number"
-msgstr ""
+msgstr "Номер назначения"
 
 msgid "INVALID_NUMBER_FORMAT"
 msgstr ""
@@ -62,35 +62,49 @@ msgid "NO_ANSWER"
 msgstr ""
 
 msgid "Call state"
-msgstr ""
+msgstr "Статус звонка"
 
+#, python-format
 msgid ""
-"datetime field is invalid, this field must be in format \"YYYY-MM-DD HH:mm:"
-"ss - YYYY-MM-DD HH:mm:ss\""
+"datetime field is invalid, this field must be in format \"%(format)s - "
+"%(format)s\""
 msgstr ""
+"Дата и время введено неверно, это поле должно быть в формате \"%(format)s - "
+"%(format)s\""
 
+msgid "YYYY-MM-DD HH:mm:ss"
+msgstr "ГГГГ-ММ-ДД ЧЧ:мм:сс"
+
+#, python-format
+msgid "datetime field must be format \"%(format)s - %(format)s\""
+msgstr "Дата и время должны быть в формате \"%(format)s - %(format)s\""
+
+#, python-format
 msgid ""
-"datetime field must be format \"YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss\""
+"duration field is invalid, this field must be in format \"%(format)s - "
+"%(format)s\""
 msgstr ""
+"Продолжительность введена неверно, это поле должно быть в формате "
+"\"%(format)s - %(format)s\""
 
-msgid ""
-"duration field is invalid, this field must be format \"HH:mm:ss - HH:mm:ss\""
-msgstr ""
+msgid "HH:mm:ss"
+msgstr "ЧЧ:мм:сс"
 
-msgid "duration field must be in format \"HH:mm:ss - HH:mm:ss\""
-msgstr ""
+#, python-format
+msgid "duration field must be in format \"%(format)s - %(format)s\""
+msgstr "Продолжительность должна быть в формате \"%(format)s - %(format)s\""
 
 msgid "uniqueid"
-msgstr ""
+msgstr "Уникальный ID"
 
 msgid "call date"
-msgstr ""
+msgstr "Дата звонка"
 
 msgid "BillSec"
 msgstr ""
 
 msgid "Duration"
-msgstr ""
+msgstr "Продолжительность"
 
 msgid "amaflags"
 msgstr ""
@@ -99,16 +113,16 @@ msgid "sequence"
 msgstr ""
 
 msgid "Source number"
-msgstr ""
+msgstr "Входящий номер"
 
 msgid "Destination number"
-msgstr ""
+msgstr "Номер назначения"
 
 msgid "Input channel"
-msgstr ""
+msgstr "Входящий канал"
 
 msgid "channel"
-msgstr ""
+msgstr "Канал"
 
 msgid "lastapp"
 msgstr ""
@@ -126,10 +140,10 @@ msgid "userfield"
 msgstr ""
 
 msgid "Output channel"
-msgstr ""
+msgstr "Исходящий канал"
 
 msgid "Call status"
-msgstr ""
+msgstr "Статус звонка"
 
 msgid "peeraccount"
 msgstr ""
@@ -138,157 +152,151 @@ msgid "accountcode"
 msgstr ""
 
 msgid "Log in"
-msgstr ""
+msgstr "Войти"
 
 msgid "Reset"
-msgstr ""
+msgstr "Сброс"
 
 msgid "You are logged out"
-msgstr ""
+msgstr "Вы вышли"
 
 msgid "Log in again"
-msgstr ""
+msgstr "Войти снова"
 
 msgid "Password change"
-msgstr ""
+msgstr "Изменить пароль"
 
 msgid "Change my password"
-msgstr ""
+msgstr "Изменить мой пароль"
+
+msgid "home"
+msgstr "На главную"
 
 msgid "Admin panel"
-msgstr ""
+msgstr "Панель Администратора"
 
 msgid "Change password"
-msgstr ""
+msgstr "Изменить пароль"
 
 msgid "Log out"
-msgstr ""
+msgstr "Выйти"
 
 msgid "An html5-capable browser is required to play this audio."
-msgstr ""
+msgstr "Требутеся html5-совместимый браузер для воспроизведения этого видео."
 
 msgid "Submit"
-msgstr ""
+msgstr "Подтвердить"
 
 msgid "Export to CSV"
-msgstr ""
+msgstr "Экспорт в CSV"
 
 msgid "File"
-msgstr ""
+msgstr "Файл"
 
 msgid "No result."
-msgstr ""
+msgstr "Ничего не найдено."
 
 msgid "Click to Reset"
-msgstr ""
+msgstr "Нажми для сброса"
 
 msgid "Position"
-msgstr ""
+msgstr "Позиция"
 
 msgid "Length"
-msgstr ""
+msgstr "Продолжительность"
 
 msgid "Today"
-msgstr ""
+msgstr "Сегодня"
 
 msgid "Yesterday"
-msgstr ""
+msgstr "Вчера"
 
-msgid "Last 7 Days"
-msgstr ""
+msgid "Last"
+msgstr "Последние"
 
-msgid "Last 14 Days"
-msgstr ""
+msgid "Days"
+msgstr "Дней"
 
 msgid "This Month"
-msgstr ""
+msgstr "Этот месяц"
 
 msgid "Last Month"
-msgstr ""
+msgstr "Последний месяц"
 
 msgid "Apply"
-msgstr ""
+msgstr "Применить"
 
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 msgid "From"
-msgstr ""
+msgstr "От"
 
 msgid "To"
-msgstr ""
+msgstr "До"
 
 msgid "Custom"
-msgstr ""
+msgstr "В ручную"
 
 msgid "Su"
-msgstr ""
+msgstr "Вс"
 
 msgid "Mo"
-msgstr ""
+msgstr "Пн"
 
 msgid "Tu"
-msgstr ""
+msgstr "Вт"
 
 msgid "We"
-msgstr ""
+msgstr "Ср"
 
 msgid "Th"
-msgstr ""
+msgstr "Чт"
 
 msgid "Fr"
-msgstr ""
+msgstr "Пт"
 
 msgid "Sa"
-msgstr ""
+msgstr "Сб"
 
 msgid "January"
-msgstr ""
+msgstr "Январь"
 
 msgid "February"
-msgstr ""
+msgstr "Февраль"
 
 msgid "March"
-msgstr ""
+msgstr "Март"
 
 msgid "April"
-msgstr ""
+msgstr "Апрель"
 
 msgid "May"
-msgstr ""
+msgstr "Май"
 
 msgid "June"
-msgstr ""
+msgstr "Июнь"
 
 msgid "July"
-msgstr ""
+msgstr "Июль"
 
 msgid "August"
-msgstr ""
+msgstr "Август"
 
 msgid "September"
-msgstr ""
+msgstr "Сентябрь"
 
 msgid "October"
-msgstr ""
+msgstr "Октябрь"
 
 msgid "November"
-msgstr ""
+msgstr "Ноябрь"
 
 msgid "December"
-msgstr ""
+msgstr "Декабрь"
 
-msgid "0-5 seconds"
-msgstr ""
+msgid "seconds"
+msgstr "секунд"
 
-msgid "0-10 seconds"
-msgstr ""
-
-msgid "0-30 seconds"
-msgstr ""
-
-msgid "0-1 minute"
-msgstr ""
-
-msgid "HH:mm:ss"
-msgstr ""
+msgid "minute"
+msgstr "минута"

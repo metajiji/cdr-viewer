@@ -3,14 +3,16 @@
 import os
 from cdr.settings_common import *
 
+DATABASE_ROUTERS = ('cdr.routers.AsteriskPBX' ,)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'cdr.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'cdr.sqlite3'),
     },
     'pbx': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'pbx.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'pbx.sqlite3'),
     }
 }
 

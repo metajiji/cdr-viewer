@@ -179,11 +179,11 @@
 						"{{ yesterday|date:'Y-m-d' }} 00:00:00",
 						"{{ yesterday|date:'Y-m-d' }} 23:59:59"
 					],
-					"{% trans 'Last 7 Days' %}": [
+					"{% trans 'Last' %} 7 {% trans 'Days' %}": [
 						"{{ week_ago|date:'Y-m-d' }} 00:00:00",
 						"{% now 'Y-m-d H:i:s' %}"
 					],
-					"{% trans 'Last 14 Days' %}": [
+					"{% trans 'Last' %} 14 {% trans 'Days' %}": [
 						"{{ 2week_ago|date:'Y-m-d' }} 00:00:00",
 						"{% now 'Y-m-d H:i:s' %}"
 					],
@@ -273,25 +273,25 @@
 					'</div>' +
 				'</div>',
 				"ranges": {
-					"{% trans '0-5 seconds' %}": [
+					"0-5 {% trans 'seconds' %}": [
 						"00:00:00",
 						"00:00:05"
 					],
-					"{% trans '0-10 seconds' %}": [
+					"0-10 {% trans 'seconds' %}": [
 						"00:00:00",
 						"00:00:10"
 					],
-					"{% trans '0-30 seconds' %}": [
+					"0-30 {% trans 'seconds' %}": [
 						"00:00:00",
 						"00:00:30"
 					],
-					"{% trans '0-1 minute' %}": [
+					"0-1 {% trans 'minute' %}": [
 						"00:00:00",
 						"00:01:00"
 					]
 				},
 					"locale": {
-					"format": "{%  trans 'HH:mm:ss' %}",
+					"format": "HH:mm:ss",
 					"separator": " - ",
 					"applyLabel": "{% trans 'Apply' %}",
 					"cancelLabel": "{% trans 'Cancel' %}",

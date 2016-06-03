@@ -78,7 +78,19 @@ python ../manage.py makemessages --locale=ru_RU --no-location
 python ../manage.py compilemessages --locale=ru_RU
 ```
 
-## Or use native os tools (not recommended)
+### If you get error like this, then you need install `gettext` package
+```
+python ../manage.py makemessages --locale=ru_RU --no-location
+CommandError: Can't find msguniq. Make sure you have GNU gettext tools 0.15 or newer installed.
+```
+
+#### like this for fix error
+
+```
+sudo apt install gettext
+```
+
+### Or use native os tools (not recommended)
 ```bash
 find accounts/locale -name *.po | sed 's/\.po$//g' | xargs -i{} msgfmt {}.po -o {}.mo
 ```
