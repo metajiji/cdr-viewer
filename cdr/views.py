@@ -1,9 +1,10 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden, StreamingHttpResponse
+from django.http import HttpResponse, HttpResponseForbidden, StreamingHttpResponse
 from django.shortcuts import render
 from .forms import AsteriskForm
 from .models import Asterisk
+import settings
 import datetime
 import calendar
 import csv
@@ -130,5 +131,15 @@ def home(request, action=None):
             'cdr_form': cdr_form,
             'calls': calls,
         })
+
+    return HttpResponseForbidden()
+
+
+@login_required
+def media(request, filename=None):
+    if request.method == 'GET' and filename is not None:
+        response = HttpResponse()
+        response['X-Accel-Redirect'] = '/%s/%s' % (settings.NGINX_MEDIA, filename)
+        return response
 
     return HttpResponseForbidden()

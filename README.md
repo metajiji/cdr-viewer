@@ -113,6 +113,32 @@ git filter-branch --force --index-filter \
 * http://stackoverflow.com/questions/8600843/serving-large-files-with-high-loads-in-django
 * https://toster.ru/q/208755
 * http://csscompressor.com/
+* http://wiki.nginx.org/XSendfile
+* https://www.nginx.com/resources/wiki/start/topics/examples/xsendfile/
+* https://djangosnippets.org/snippets/2728/
+
+### Additional headers for Nginx:
+
+```
+X-Accel-Limit-Rate: 1024
+X-Accel-Buffering: yes|no
+X-Accel-Charset: utf-8
+```
+
+### Note that the following HTTP headers aren't modified by NGINX:
+
+```
+Content-Type
+Content-Disposition
+Accept-Ranges
+Set-Cookie
+Cache-Control
+Expires
+```
+
+>`/media_nginx/` cant be equal `/media/`, because `/media_nginx/` is internal and
+> nginx not accept request from external network from users
+> nginx will be accep only internal responses from backed application
 
 ## 3rdparty components
 * http://mottie.github.io/tablesorter/docs/

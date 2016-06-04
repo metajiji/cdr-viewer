@@ -17,11 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
-# from .views import cdr
 from . import views
 
-# TODO x-accel-redirect.
-# https://toster.ru/q/208755
 urlpatterns = [
     # Auth
     url('^login/$', auth_views.login, {'template_name': 'auth/login.html'}, name='login'),
@@ -37,9 +34,7 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='home')),
     url(r'^cdr/$', views.home, name='home'),
     url(r'^cdr/(?P<action>.+)/$', views.home, name='cdr_action'),
-]
 
-# TODO: development serve static and media files
-from django.conf.urls.static import static
-from django.conf import settings
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # Serve media files via Nginx X-Accel-Redirect
+    url(r'^media/(?P<filename>.+)$', views.media, name='media'),
+]
