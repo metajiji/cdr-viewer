@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
+from django.views.i18n import javascript_catalog
 from . import views
 
 urlpatterns = [
@@ -34,6 +35,8 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='home')),
     url(r'^cdr/$', views.home, name='home'),
     url(r'^cdr/(?P<action>.+)/$', views.home, name='cdr_action'),
+
+    url(r'^jsi18n/(?P<packages>\S+?)/$', javascript_catalog, name='jsi18n'),
 
     # Serve media files via Nginx X-Accel-Redirect
     url(r'^media/(?P<filename>.+)$', views.media, name='media'),

@@ -1,9 +1,9 @@
 (function($){
 	'use strict';
 	$.bootstrap3_player = {
-		timeTitle: 'Click to Reset',
-		timePosition: 'Position',
-		timeLength: 'Length'
+		timeTitle: gettext('Click to Reset'),
+		timePosition: gettext('Position'),
+		timeLength: gettext('Length')
 	};
 
 	$('audio[controls]').before(function(){
@@ -22,8 +22,8 @@
 			$(player_box).find('.btn').addClass('disabled').attr('disabled', 'disabled');
 			$('#time').removeAttr('disabled');
 			$(player_box).find('input[type="range"]').hide();
-			$(player_box).find('.glyphicon-refresh').text('Error');
-			$(player_box).find('.glyphicon-refresh').parent().attr('title', 'There was an error loading the audio.');
+			$(player_box).find('.glyphicon-refresh').text(gettext('Error'));
+			$(player_box).find('.glyphicon-refresh').parent().attr('title', gettext('There was an error loading the audio.'));
 			$(player_box).find('.glyphicon-refresh').parent().tooltip('fixTitle');
 			$(player_box).find('.glyphicon-refresh').removeClass('glyphicon glyphicon-refresh spin');
 		};  // load_error
