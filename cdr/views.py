@@ -139,6 +139,7 @@ def home(request, action=None):
 def media(request, filename=None):
     if request.method == 'GET' and filename is not None:
         response = HttpResponse()
+        response['Content-Type'] = ''  # let nginx guess the right mime type
         response['X-Accel-Redirect'] = '/%s/%s' % (settings.NGINX_MEDIA, filename)
         return response
 
