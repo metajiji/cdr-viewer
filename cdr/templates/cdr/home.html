@@ -5,7 +5,6 @@
 {% block bootstrap3_extra_head %}
 	<script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
 	<script type="text/javascript">window.jQuery = window.$ = django.jQuery;</script>
-	<script type="text/javascript" src="{% url 'jsi18n' 'cdr' %}"></script>
 
 	<link rel="stylesheet" type="text/css" href="{% static 'cdr/css/bootstrap3_player.min.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'cdr/css/jquery.tablesorter.theme.bootstrap.min.css' %}" />
@@ -135,6 +134,8 @@
 			$.bootstrap3_player.timeTitle = '{% trans 'Click to Reset' %}';
 			$.bootstrap3_player.timePosition = '{% trans 'Position' %}';
 			$.bootstrap3_player.timeLength = '{% trans 'Length' %}';
+			$.bootstrap3_player.loadError = '{% trans 'Error' %}';
+			$.bootstrap3_player.loadErrorMsg = '{% trans 'There was an error loading the audio.' %}';
 
 			$.tablesorter.themes.bootstrap = {
 				table       : 'table table-bordered table-striped',

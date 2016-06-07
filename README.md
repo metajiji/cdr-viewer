@@ -66,7 +66,6 @@ python -m smtpd -n -c DebuggingServer localhost:1025
 cd cdr
 [ -d locale ] || mkdir locale
 python ../manage.py makemessages --locale=ru_RU --no-location
-python ../manage.py makemessages -d djangojs --locale=ru_RU --no-location
 python ../manage.py compilemessages --locale=ru_RU
 ```
 
@@ -76,7 +75,6 @@ python ../manage.py compilemessages --locale=ru_RU
 . venv/bin/activate
 cd cdr
 python ../manage.py makemessages --locale=ru_RU --no-location
-python ../manage.py makemessages -d djangojs --locale=ru_RU --no-location
 python ../manage.py compilemessages --locale=ru_RU
 ```
 
