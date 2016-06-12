@@ -8,7 +8,8 @@
 			{% trans 'You are logged out' %}
 		</div>
 		<div class="panel-body">
-			{% bootstrap_button _('Log in again') button_type='link' href="login" button_class='btn-primary' icon='log-in' %}
+			<a class="btn btn-primary" href="{% url 'login' %}"
+			   type="link">{% bootstrap_icon 'log-in' %} {% trans 'Log in again' %}</a>
 		</div>
 	</div>
 </div>
