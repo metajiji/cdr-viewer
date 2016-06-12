@@ -93,7 +93,8 @@
 								{# TODO: check file exists #}
 								<button type="button" audiourl="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3"
 										class="btn btn-success playbtn">{% bootstrap_icon "play" %}</button>
-								<a class="btn btn-default" target="_blank" href="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3"
+								<a class="btn btn-default" target="_blank"
+								   href="{{ MEDIA_URL }}{{ c.uniqueid }}.mp3?download=true"
 								   type="link">{% bootstrap_icon "download-alt" %}</a>
 							</div>
 						</td>

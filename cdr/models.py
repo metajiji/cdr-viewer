@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
+import settings
 
 
 class Asterisk(models.Model):
@@ -50,5 +51,5 @@ class Asterisk(models.Model):
     peeraccount = models.CharField(max_length=20, verbose_name=_('peeraccount'))
     accountcode = models.CharField(max_length=20, db_index=True, verbose_name=_('accountcode'))
 
-    # class Meta:
-    #     managed = False
+    class Meta:
+        db_table = settings.CDR_TABLE_NAME

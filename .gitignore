@@ -8,3 +8,5 @@ public/*
 !*.gitkeep
 !public/favicon.ico
 cdr/settings.py
+*.pid
+guniconf.py

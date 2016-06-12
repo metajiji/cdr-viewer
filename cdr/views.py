@@ -139,6 +139,9 @@ def home(request, action=None):
 def media(request, filename=None):
     if request.method == 'GET' and filename is not None:
         response = HttpResponse()
+        if 'download' in request.method:
+            response['Content-Transfer-Encoding'] = 'binary'
+            response['Content-Disposition'] = 'attachment; filename="%s"' % filename
         response['Content-Type'] = ''  # let nginx guess the right mime type
         response['X-Accel-Redirect'] = '/%s/%s' % (settings.NGINX_MEDIA, filename)
         return response

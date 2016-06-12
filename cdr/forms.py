@@ -33,11 +33,10 @@ class AsteriskForm(forms.Form):
     dst_number_option = forms.ChoiceField(required=False, choices=FILTER_CHOICES)
 
     CALL_STATUS_LIST = (
-        ('INVALID_NUMBER_FORMAT', _('INVALID_NUMBER_FORMAT', )),
-        ('NORMAL_CLEARING', _('NORMAL_CLEARING', )),
-        ('CALL_REJECTED', _('CALL_REJECTED', )),
-        ('USER_BUSY', _('USER_BUSY', )),
-        ('NO_ANSWER', _('NO_ANSWER', )),)
+        ('BUSY', _('BUSY', )),
+        ('FAILED', _('FAILED', )),
+        ('ANSWERED', _('ANSWERED', )),
+        ('NO ANSWER', _('NO ANSWER', )),)
     call_state = forms.MultipleChoiceField(required=False, choices=CALL_STATUS_LIST, label=_('Call state'),
                                            widget=forms.CheckboxSelectMultiple)
 

@@ -28,7 +28,7 @@ SECRET_KEY = '00&3fw7gr0_-i0*hm4(gz9e$5=i+5i$-084zb%sa#d-(1a_-$('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -137,3 +137,5 @@ BOOTSTRAP3 = {
     'theme_url': '%scdr/css/style.css' % STATIC_URL,
     'javascript_in_head': True,
 }
+
+CDR_TABLE_NAME = 'cdr'

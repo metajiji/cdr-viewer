@@ -25,7 +25,8 @@ urlpatterns = [
     url('^logout/$', auth_views.logout, {'template_name': 'auth/logout.html'}, name='logout'),
     url('^password_change/$', auth_views.password_change, {'template_name': 'auth/password_change.html'},
         name='password_change'),
-    url('^password_change_done/$', auth_views.password_change_done, name='password_change_done'),
+    url('^password_change_done/$', auth_views.password_change_done, {'template_name': 'auth/password_change_done.html'},
+        name='password_change_done'),
 
     # Admin
     url(r'^admin/', admin.site.urls),
@@ -36,5 +37,5 @@ urlpatterns = [
     url(r'^cdr/(?P<action>.+)/$', views.home, name='cdr_action'),
 
     # Serve media files via Nginx X-Accel-Redirect
-    url(r'^media/(?P<filename>.+)$', views.media, name='media'),
+    url(r'^media/(?P<filename>.+)?.*$', views.media, name='media'),
 ]
