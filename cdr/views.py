@@ -13,7 +13,7 @@ import csv
 @login_required
 def home(request, action=None):
     if request.method == 'GET':
-        calls_list = Asterisk.objects.all()
+        calls_list = Asterisk.objects.order_by('-calldate')
 
         rows = 10
         page = 1
