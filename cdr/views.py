@@ -121,13 +121,17 @@ def home(request, action=None):
             return response
 
         date = datetime.datetime.now()
+        last_month, last_year = 12, date.year - 1
+        if date.month > 1:
+            last_month = date.month - 1
+            last_year = date.year
 
         return render(request, 'cdr/home.html', {
             'yesterday': date - datetime.timedelta(days=1),
             'week_ago': date - datetime.timedelta(days=7),
             '2week_ago': date - datetime.timedelta(days=14),
             'this_month': datetime.date(date.year, date.month, calendar.monthrange(date.year, date.month)[1]),
-            'last_month': datetime.date(date.year, date.month-1, calendar.monthrange(date.year, date.month-1)[1]),
+            'last_month': datetime.date(last_year, last_month, calendar.monthrange(last_year, last_month)[1]),
             'cdr_form': cdr_form,
             'calls': calls,
         })
